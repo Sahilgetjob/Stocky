@@ -5,9 +5,9 @@
 
 - Transactions: Reward + ledger writes run inside a DB transaction so failures are rolled back and no partial state remains.
 
-- Missing price: If no price exists for a symbol the service falls back to a default price (for testing). In production you should surface an error or use a reliable price feed.
+- Missing price: If no price exists for a symbol the service falls back to a default price (for testing). In production we should surface an error or use a reliable price feed.
 
-- Validation: Numeric inputs are parsed server-side; invalid numbers should return 400. (We can tighten this in code.)
+- Validation: Numeric inputs are parsed server-side; invalid numbers should return 400.
 
 - Scaling ideas (brief): cache prices (Redis), move price updates to a worker/cron job, add read replicas for heavy read endpoints, and keep the ledger invariant for auditability.
 
