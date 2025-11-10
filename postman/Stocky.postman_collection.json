@@ -28,7 +28,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"idempotencyKey\": \"req-25a7llbt\",\n  \"userId\": 1,\n  \"symbol\": \"RELIANCE\",\n  \"units\": \"1.250000\",\n  \"timestamp\": \"2025-11-10T02:58:11.348167\"\n}"
+          "raw": "{\n  \"idempotencyKey\": \"req-25a7llbt\",\n  \"userId\": 1,\n  \"symbol\": \"RELIANCE\",\n  \"units\": \"1.250000\",\n  \"timestamp\": \"2025-11-10T02:58:11.348167+05:30\"\n}"
         }
       }
     },

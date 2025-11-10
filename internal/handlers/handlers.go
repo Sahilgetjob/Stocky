@@ -16,6 +16,34 @@ import (
 	"github.com/Sahilgetjob/stocky-backend/internal/util"
 )
 
+// customTime allows parsing timestamps with or without timezone
+type customTime struct {
+	time.Time
+}
+
+func (ct *customTime) UnmarshalJSON(b []byte) error {
+	s := string(b)
+	if len(s) > 0 && s[0] == '"' && s[len(s)-1] == '"' {
+		s = s[1 : len(s)-1]
+	}
+
+	// Try RFC3339 with timezone first
+	t, err := time.Parse(time.RFC3339, s)
+	if err == nil {
+		ct.Time = t
+		return nil
+	}
+
+	// Try ISO8601 without timezone (treat as UTC)
+	t, err = time.Parse("2006-01-02T15:04:05.000000", s)
+	if err == nil {
+		ct.Time = t
+		return nil
+	}
+
+	return fmt.Errorf("cannot parse timestamp %q", s)
+}
+
 type Handler struct {
 	db *gorm.DB
 }
@@ -34,11 +62,11 @@ func (h *Handler) RegisterRoutes(r *gin.Engine) {
 }
 
 type postRewardReq struct {
-	IdempotencyKey string    `json:"idempotencyKey"`
-	UserID         uint      `json:"userId" binding:"required"`
-	Symbol         string    `json:"symbol" binding:"required"`
-	Units          string    `json:"units" binding:"required"`
-	Timestamp      time.Time `json:"timestamp"`
+	IdempotencyKey string     `json:"idempotencyKey"`
+	UserID         uint       `json:"userId" binding:"required"`
+	Symbol         string     `json:"symbol" binding:"required"`
+	Units          string     `json:"units" binding:"required"`
+	Timestamp      customTime `json:"timestamp"`
 }
 
 const (
@@ -64,7 +92,7 @@ func (h *Handler) postReward(c *gin.Context) {
 
 	req.Symbol = strings.ToUpper(strings.TrimSpace(req.Symbol))
 	if req.Timestamp.IsZero() {
-		req.Timestamp = util.Now()
+		req.Timestamp.Time = util.Now()
 	}
 
 	// idempotency
@@ -99,7 +127,7 @@ func (h *Handler) postReward(c *gin.Context) {
 			UserID:         req.UserID,
 			Symbol:         req.Symbol,
 			Units:          req.Units,
-			EventTime:      req.Timestamp,
+			EventTime:      req.Timestamp.Time,
 			IdempotencyKey: req.IdempotencyKey,
 		}
 		if err := tx.Create(&rw).Error; err != nil {
