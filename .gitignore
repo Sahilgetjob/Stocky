@@ -1,0 +1,48 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# Binaries and executables
+/stocky
+/bin
+/dist
+
+# Logs
+*.log
+logs/
+
+# Test outputs
+*.out
+*.test
+
+# Go build cache
+.cache/
+vendor/
+
+# Air - Go live reload
+tmp/
+
+# Local development
+*.pem
+*.key
+
+# IDEs
+.vscode
+.idea
+*.sublime-workspace
+*.sublime-project

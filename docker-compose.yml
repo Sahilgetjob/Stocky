@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:15
+    container_name: stocky-db
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_DB: ${DB_NAME:-assignment}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-assignment}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  app:
+    build: .
+    container_name: stocky-app
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    command: ["/stocky"]
+volumes:
+  pgdata:
+    driver: local

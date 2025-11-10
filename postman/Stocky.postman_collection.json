@@ -1,0 +1,64 @@
+{
+  "info": {
+    "name": "Stocky",
+    "_postman_id": "b1c2d3e4-f5a6-7890-1234-56789abcdeff",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Reward",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/reward",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "reward"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"idempotencyKey\": \"req-25a7llbt\",\n  \"userId\": 1,\n  \"symbol\": \"RELIANCE\",\n  \"units\": \"1.250000\",\n  \"timestamp\": \"2025-11-10T02:58:11.348167\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Today Stocks",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/today-stocks/1"
+      }
+    },
+    {
+      "name": "Historical INR",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/historical-inr/1"
+      }
+    },
+    {
+      "name": "Stats",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/stats/1"
+      }
+    },
+    {
+      "name": "Portfolio",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/portfolio/1"
+      }
+    }
+  ]
+}
